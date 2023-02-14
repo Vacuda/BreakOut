@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class BallMovement : MonoBehaviour
 {
-    // Start is called before the first frame update
+    Rigidbody2D r_body;
+    float constantSpeed = 18.0f;
+    
     void Start()
     {
-        
+        //get rigidbody
+        r_body = gameObject.GetComponent<Rigidbody2D>();
+
+        //set initial direction
+        Vector2 taco = new Vector2(13.0f, 20.0f);
+
+        //add initial force
+        r_body.AddForce(taco, ForceMode2D.Impulse);
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
-        
+        //control speed
+        r_body.velocity = constantSpeed * (r_body.velocity.normalized);
     }
 }
