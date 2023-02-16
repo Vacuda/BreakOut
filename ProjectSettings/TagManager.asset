@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Retro
+    uniqueID: 3219273229
+    locked: 0
+  - name: Ball
+    uniqueID: 3979716845
+    locked: 0
+  - name: UI
+    uniqueID: 2436145595
+    locked: 0
