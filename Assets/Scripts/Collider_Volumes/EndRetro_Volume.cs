@@ -15,6 +15,23 @@ public class EndRetro_Volume : MonoBehaviour
             {
                 //trigger
                 game_level.Entered_EndRetro_Volume();
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        Debug.Log("got here.");
+
+
+        ICanCollideWith lava = collision.gameObject.GetComponent<ICanCollideWith>();
+
+        if (lava != null)
+        {
+            if (lava.object_type == ot_BALL)
+            {
+                //trigger
+                game_level.Close_Gate();
 
                 //shutdown
                 Destroy(this);

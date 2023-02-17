@@ -7,6 +7,7 @@ public class Ball : MonoBehaviour, ICanCollideWith
 {
     Animator anim;
     Rigidbody2D r_body;
+    public GameLevel game_level;
     public ot_OBJECTTYPE object_type { get; set; } = ot_BALL;
 
     void Start()
@@ -51,9 +52,8 @@ public class Ball : MonoBehaviour, ICanCollideWith
 
         yield return new WaitForSeconds(1.0f);
 
+        game_level.Trigger_EndGame();
 
-        //shutdown
-        Destroy(gameObject);
 
 
 

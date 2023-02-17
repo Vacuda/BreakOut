@@ -44,8 +44,20 @@ TagManager:
   - name: Retro
     uniqueID: 3219273229
     locked: 0
+  - name: Flooring
+    uniqueID: 815388053
+    locked: 0
+  - name: Base
+    uniqueID: 2457964875
+    locked: 0
   - name: Ball
     uniqueID: 3979716845
+    locked: 0
+  - name: Effects
+    uniqueID: 1065392275
+    locked: 0
+  - name: Overhang
+    uniqueID: 3079135849
     locked: 0
   - name: UI
     uniqueID: 2436145595

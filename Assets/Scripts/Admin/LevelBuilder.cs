@@ -1,74 +1,376 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
-public static class LevelBuilder
+public class LevelBuilder : MonoBehaviour
 {
-    public static LevelInfo BuildALevel()
+
+
+    public Tilemap _tilemap;
+    public GameObject gate;
+    private GameLevel game_level;
+    public Sprite[] sprite_array;
+
+    [Header("Prefabs")]
+    public GameObject PF_Wall;
+    public GameObject PF_Spike;
+    public GameObject PF_DoorWay;
+    public GameObject PF_FloorTile;
+
+    /* TEMP MEMBERS */
+    Vector3Int grid_pos;
+    Vector3 pos;
+    Quaternion rot;
+
+    private void Awake()
     {
-        LevelInfo info = new LevelInfo();
+        grid_pos = new Vector3Int(0, 0, 0);
+        pos = new Vector3(0.0f, 0.0f, 0.0f);
+        rot = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
 
-        //find door
+    }
+
+    void Start()
+    {
+        game_level = gameObject.GetComponent<GameLevel>();
+
+    }
+
+    public void BuiltOut_ThisLevel(LevelInfo info)
+    {
+        Build_Floorings(info);
+
+        Build_CornerStones();
+        Build_Gate();
+        Build_Spikes(info);
+        Build_Walls(info);
+
+
+
+
+
+
+    }
+
+    /* BUILDS */
+
+    void Build_Gate()
+    {
+        //full rows
+        for (int x = -18; x <= 3; x++)
         {
-            //initialize rand
-            int rand;
+            //top row, attach to gate
+            MakeBlock(x, 14, true);
 
-            //get side
-            switch (Random.Range(1, 4)) //1-3
+            //top row, attach to gate
+            MakeBlock(x, 13, true);
+        }
+
+        //side spikes
+        MakeSpike(-19, 14, 90, true);
+        MakeSpike(-19, 13, 90, true);
+    }
+
+    void Build_Floorings(LevelInfo info)
+    {
+        int runner = 0;
+
+        //loop cols
+        for(int y = 14; y>=-12; y -= 2)
+        {
+            //loop rows
+            for (int x = -18; x <= 2; x+=2)
             {
-                //left
-                case 1:
-                    //get rand
-                    rand = Random.Range(0, 25);  //0-24
+                //make tile
+                MakeFloorTile(x, y, info.floor_array[runner]);
 
-                    Debug.Log(rand);
-
-                    //set as doors
-                    info.wall_left_array[rand] = 1;
-                    info.wall_left_array[rand+1] = 1;
-
-                    Debug.Log("left");
-                    break;
-
-                //right
-                case 2:
-                    //get rand
-                    rand = Random.Range(0, 25);  //0-24
-
-                    Debug.Log(rand);
-
-                    //set as doors
-                    info.wall_right_array[rand] = 1;
-                    info.wall_right_array[rand + 1] = 1;
-
-                    Debug.Log("right");
-                    break;
-
-                //bottom
-                case 3:
-                    //get rand
-                    rand = Random.Range(0, 21);  //0-20
-
-                    Debug.Log(rand);
-
-                    //set as doors
-                    info.wall_bottom_array[rand] = 1;
-                    info.wall_bottom_array[rand + 1] = 1;
-
-                    Debug.Log("bottom");
-                    break;
-
-                default:
-                    rand = -1;
-                    break;
+                //increment runner
+                runner++;
             }
+        }
+    }
+
+    void Build_CornerStones()
+    {
+
+        MakeBlock(-20, 14);
+        MakeBlock(-20, 13);
+        MakeBlock(-19, 14);
+        MakeBlock(-19, 13);
+
+        MakeBlock(4, 14);
+        MakeBlock(4, 13);
+        MakeBlock(5, 14);
+        MakeBlock(5, 13);
+
+        MakeBlock(-20, -14);
+        MakeBlock(-20, -15);
+        MakeBlock(-19, -14);
+        MakeBlock(-19, -15);
+
+        MakeBlock(4, -14);
+        MakeBlock(4,-15);
+        MakeBlock(5, -14);
+        MakeBlock(5, -15);
+
+
+    }
+
+    void Build_Walls(LevelInfo info)
+    {
+        int runner = 0;
+        int object_code = 0;
+
+        //left side
+        for (int y = 12; y >= -13; y--)
+        {
+            //get object_code
+            object_code = info.wall_array[runner];
+
+            //if wall = 0
+            if (object_code == 0)
+            {
+                //left col
+                MakeBlock(-20, y);
+
+                //right col
+                MakeBlock(-19, y);
+            }
+
+            //if doorway = 1
+            if (object_code == 1)
+            {
+                MakeDoorWay(-19, y, 270);
+            }
+
+            //if skipping = -1
+            if (object_code == -1)
+            {
+                //do nothing
+            }
+
+            //increment runner
+            runner++;
+        }
+
+        //bottom
+        for (int x = -18; x <= 3; x++)
+        {
+            //get object_code
+            object_code = info.wall_array[runner];
+
+            //if wall = 0
+            if (object_code == 0)
+            {
+                //top row
+                MakeBlock(x, -14);
+
+                //bottom row
+                MakeBlock(x, -15);
+            }
+
+            //if doorway = 1
+            if (object_code == 1)
+            {
+                MakeDoorWay(x, -14, 0);
+            }
+
+            //if skipping = -1
+            if (object_code == -1)
+            {
+                //do nothing
+            }
+
+            //increment runner
+            runner++;
+        }
+
+        //right side
+        for (int y = -13; y <= 12; y++)
+        {
+            //get object_code
+            object_code = info.wall_array[runner];
+
+            //if wall = 0
+            if (object_code == 0)
+            {
+                //left col
+                MakeBlock(4, y);
+
+                //right col
+                MakeBlock(5, y);
+            }
+
+            //if doorway = 1
+            if (object_code == 1)
+            {
+                MakeDoorWay(5, y, 90);
+            }
+
+            //if skipping = -1
+            if (object_code == -1)
+            {
+                //do nothing
+            }
+
+            //increment runner
+            runner++;
+        }
+    }
+
+    void Build_Spikes(LevelInfo info)
+    {
+        int runner = 0;
+
+        //loop top row
+        for(int x = -18; x <= 3; x++)
+        {
+            //if spike
+            if (info.spike_array[runner] == 1)
+            {
+                MakeSpike(x, 12, 180);
+            }
+
+            //increment runner
+            runner++;
+        }
+
+        //loop right side
+        for (int y = 12; y >= -13; y--)
+        {
+            //if spike
+            if (info.spike_array[runner] == 1)
+            {
+                MakeSpike(3, y, 90);
+            }
+
+            //increment runner
+            runner++;
+        }
+
+        //loop bot row
+        for (int x = 3; x >= -18; x--)
+        {
+            //if spike
+            if (info.spike_array[runner] == 1)
+            {
+                MakeSpike(x, -13, 0);
+            }
+
+            //increment runner
+            runner++;
+        }
+
+        //loop left side
+        for (int y = -13; y <= 12; y++)
+        {
+            //if spike
+            if (info.spike_array[runner] == 1)
+            {
+                MakeSpike(-18, y, 270);
+            }
+
+            //increment runner
+            runner++;
         }
 
 
+    }
 
 
+    /* MAKES */
 
+    void MakeFloorTile(int x, int y, int style)
+    {
+        //instantiate block
+        GameObject floor_tile = Instantiate(PF_FloorTile);
 
-        return info;
+        //change grid values
+        grid_pos.x = x;
+        grid_pos.y = y;
+
+        //get world pos
+        pos = _tilemap.GetCellCenterWorld(grid_pos);
+
+        //set position
+        floor_tile.transform.position = pos;
+
+        //change tile sprite
+        floor_tile.transform.Find("FloorTile").GetComponent<SpriteRenderer>().sprite = sprite_array[style];
+    }
+
+    void MakeDoorWay(int x, int y, int rotation)
+    {
+        //instantiate block
+        GameObject doorway = Instantiate(PF_DoorWay);
+
+        //change grid values
+        grid_pos.x = x;
+        grid_pos.y = y;
+
+        //get world pos
+        pos = _tilemap.GetCellCenterWorld(grid_pos);
+
+        //set position
+        doorway.transform.position = pos;
+
+        //set rotation
+        doorway.transform.Rotate(0, 0, rotation);
+
+        //set ref
+        doorway.transform.Find("Collider").GetComponent<DoorWay_Volume>().game_level = game_level;
+    }
+
+    void MakeSpike(int x, int y, int rotation, bool IsAttachedToGate = false)
+    {
+        //instantiate block
+        GameObject spike = Instantiate(PF_Spike);
+
+        //change grid values
+        grid_pos.x = x;
+        grid_pos.y = y;
+
+        //get world pos
+        pos = _tilemap.GetCellCenterWorld(grid_pos);
+
+        //set position
+        spike.transform.position = pos;
+
+        //set rotation
+        spike.transform.Rotate(0, 0, rotation);
+
+        //if need to attach to gate
+        if (y==12 && rotation == 180)
+        {
+            spike.transform.parent = gate.transform;
+        }
+
+        //if need to attach to gate
+        if(IsAttachedToGate)
+        {
+            spike.transform.parent = gate.transform;
+        }
+    }
+
+    void MakeBlock(int x, int y, bool attachToGate = false)
+    {
+        //instantiate block
+        GameObject block = Instantiate(PF_Wall);
+
+        //change grid values
+        grid_pos.x = x;
+        grid_pos.y = y;
+
+        //get world pos
+        pos = _tilemap.GetCellCenterWorld(grid_pos);
+
+        //set position
+        block.transform.position = pos;
+
+        //if need to attach to gate
+        if (attachToGate)
+        {
+            block.transform.parent = gate.transform;
+        }
     }
 }
