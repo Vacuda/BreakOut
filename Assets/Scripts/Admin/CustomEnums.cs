@@ -8,7 +8,7 @@ public enum bt_BRICKTYPE
 
 public enum ot_OBJECTTYPE
 {
-    ot_WALL, ot_SPIKE, ot_BALL
+    ot_WALL, ot_SPIKE, ot_BALL, ot_PADDLE, ot_BRICK
 }
 
 interface ICanCollideWith

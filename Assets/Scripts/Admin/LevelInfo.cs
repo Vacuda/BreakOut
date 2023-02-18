@@ -3,11 +3,11 @@ public class LevelInfo
 {
     public LevelInfo()
     {
-        this.wall_array = new int[74]; // 26, 22, 26
+        this.wall_array = new int[82]; // 26, 30, 26
 
-        this.floor_array = new int[195]; //13 each row, 15 rows
+        this.floor_array = new int[255]; //17 each row, 15 rows
 
-        this.spike_array = new int[96]; // 26, 26, 22, 22
+        this.spike_array = new int[112]; // 30, 26, 30, 26
     }
 
 
@@ -20,8 +20,18 @@ public class LevelInfo
     //Left to Right, Top to Bottom
     public int[] floor_array;
 
-    //Start TopLeft, Clockwise
+    //Start TopLeft, Counter-Clockwise
     public int[] spike_array;
 
+
+    /* UTILITIES */
+
+    public void Remove_Spikes_AroundDoors(int index)
+    {
+        spike_array[index] = 0;
+        spike_array[index + 1] = 0;
+        spike_array[index + 2] = 0;
+        spike_array[index + 3] = 0;
+    }
 
 }

@@ -22,7 +22,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Mouse_RightButton",
+                    "name": "Keyboard_AnyKey",
                     "type": "Button",
                     "id": "5569a8cc-818a-421d-9d1c-323c09de428e",
                     "expectedControlType": "Button",
@@ -56,38 +56,11 @@
                 {
                     "name": "",
                     "id": "eec3e6fb-ed58-44df-930d-d7b89bc79335",
-                    "path": "<Mouse>/rightButton",
+                    "path": "<Keyboard>/anyKey",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Mouse_RightButton",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Game",
-            "id": "4b0e1cd2-90be-40df-abec-6ec8a9078212",
-            "actions": [
-                {
-                    "name": "New action",
-                    "type": "Button",
-                    "id": "f78ed8c2-babb-4aee-93d0-bae5ff31def5",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "79401806-b964-49bf-8f29-373e5eb5d454",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "New action",
+                    "action": "Keyboard_AnyKey",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

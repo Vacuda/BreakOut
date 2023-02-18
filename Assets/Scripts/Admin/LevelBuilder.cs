@@ -57,7 +57,7 @@ public class LevelBuilder : MonoBehaviour
     void Build_Gate()
     {
         //full rows
-        for (int x = -18; x <= 3; x++)
+        for (int x = -18; x <= 11; x++)
         {
             //top row, attach to gate
             MakeBlock(x, 14, true);
@@ -76,10 +76,10 @@ public class LevelBuilder : MonoBehaviour
         int runner = 0;
 
         //loop cols
-        for(int y = 14; y>=-12; y -= 2)
+        for(int y = 14; y>=-14; y -= 2)
         {
             //loop rows
-            for (int x = -18; x <= 2; x+=2)
+            for (int x = -20; x <= 12; x+=2)
             {
                 //make tile
                 MakeFloorTile(x, y, info.floor_array[runner]);
@@ -98,20 +98,20 @@ public class LevelBuilder : MonoBehaviour
         MakeBlock(-19, 14);
         MakeBlock(-19, 13);
 
-        MakeBlock(4, 14);
-        MakeBlock(4, 13);
-        MakeBlock(5, 14);
-        MakeBlock(5, 13);
+        MakeBlock(12, 14);
+        MakeBlock(12, 13);
+        MakeBlock(13, 14);
+        MakeBlock(13, 13);
 
         MakeBlock(-20, -14);
         MakeBlock(-20, -15);
         MakeBlock(-19, -14);
         MakeBlock(-19, -15);
 
-        MakeBlock(4, -14);
-        MakeBlock(4,-15);
-        MakeBlock(5, -14);
-        MakeBlock(5, -15);
+        MakeBlock(12, -14);
+        MakeBlock(12,-15);
+        MakeBlock(13, -14);
+        MakeBlock(13, -15);
 
 
     }
@@ -154,7 +154,7 @@ public class LevelBuilder : MonoBehaviour
         }
 
         //bottom
-        for (int x = -18; x <= 3; x++)
+        for (int x = -18; x <= 11; x++)
         {
             //get object_code
             object_code = info.wall_array[runner];
@@ -195,16 +195,16 @@ public class LevelBuilder : MonoBehaviour
             if (object_code == 0)
             {
                 //left col
-                MakeBlock(4, y);
+                MakeBlock(12, y);
 
                 //right col
-                MakeBlock(5, y);
+                MakeBlock(13, y);
             }
 
             //if doorway = 1
             if (object_code == 1)
             {
-                MakeDoorWay(5, y, 90);
+                MakeDoorWay(12, y, 90);
             }
 
             //if skipping = -1
@@ -222,47 +222,8 @@ public class LevelBuilder : MonoBehaviour
     {
         int runner = 0;
 
-        //loop top row
-        for(int x = -18; x <= 3; x++)
-        {
-            //if spike
-            if (info.spike_array[runner] == 1)
-            {
-                MakeSpike(x, 12, 180);
-            }
-
-            //increment runner
-            runner++;
-        }
-
-        //loop right side
-        for (int y = 12; y >= -13; y--)
-        {
-            //if spike
-            if (info.spike_array[runner] == 1)
-            {
-                MakeSpike(3, y, 90);
-            }
-
-            //increment runner
-            runner++;
-        }
-
-        //loop bot row
-        for (int x = 3; x >= -18; x--)
-        {
-            //if spike
-            if (info.spike_array[runner] == 1)
-            {
-                MakeSpike(x, -13, 0);
-            }
-
-            //increment runner
-            runner++;
-        }
-
         //loop left side
-        for (int y = -13; y <= 12; y++)
+        for (int y = 12; y >= -13; y--)
         {
             //if spike
             if (info.spike_array[runner] == 1)
@@ -274,7 +235,44 @@ public class LevelBuilder : MonoBehaviour
             runner++;
         }
 
+        //loop bot row
+        for (int x = -18; x <= 11; x++)
+        {
+            //if spike
+            if (info.spike_array[runner] == 1)
+            {
+                MakeSpike(x, -13, 0);
+            }
 
+            //increment runner
+            runner++;
+        }
+
+        //loop right side
+        for (int y = -13; y <= 12; y++)
+        {
+            //if spike
+            if (info.spike_array[runner] == 1)
+            {
+                MakeSpike(11, y, 90);
+            }
+
+            //increment runner
+            runner++;
+        }
+
+        //loop top row
+        for(int x = 11; x >= -18; x--)
+        {
+            //if spike
+            if (info.spike_array[runner] == 1)
+            {
+                MakeSpike(x, 12, 180);
+            }
+
+            //increment runner
+            runner++;
+        }
     }
 
 
@@ -318,7 +316,7 @@ public class LevelBuilder : MonoBehaviour
         doorway.transform.Rotate(0, 0, rotation);
 
         //set ref
-        doorway.transform.Find("Collider").GetComponent<DoorWay_Volume>().game_level = game_level;
+        doorway.transform.Find("DoorWay_Volume").GetComponent<DoorWay_Volume>().game_level = game_level;
     }
 
     void MakeSpike(int x, int y, int rotation, bool IsAttachedToGate = false)

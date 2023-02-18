@@ -7,8 +7,8 @@ public static class LevelHouse
         LevelInfo info = new LevelInfo();
 
         Place_Flooring(info);
-        Place_Door(info, rank);
         Place_Spikes(info, rank);
+        Place_Door(info, rank);
 
         return info;
     }
@@ -19,9 +19,10 @@ public static class LevelHouse
         if(rank == 0) { return; }
 
         //early edge case correct
-        if(rank >= 25) { rank = 24; }
+        if(rank >= 28) { rank = 28; }
         if(rank < 0) { rank = 0; }
 
+        //initialize spike_spots
         int spike_spots = 1;
 
         //get spike spots by rank
@@ -41,13 +42,17 @@ public static class LevelHouse
         {
             spike_spots = 4;
         }
-        else if(rank <= 24)
+        else if(rank <= 25)
         {
             spike_spots = 5;
         }
+        else if (rank <= 27)
+        {
+            spike_spots = 6;
+        }
         else
         {
-            //full spikes, 1 spike_spot will suffice   //@@@@ somehow, rank 25 endless loop error
+            //full spikes, 1 spike_spot will suffice   
         }
 
         //initialize
@@ -103,12 +108,33 @@ public static class LevelHouse
 
     public static void Place_Door(LevelInfo info, int rank)
     {
+        int rand;
+
         //initialize rand
-        int rand = Random.Range(0, 74); //0-73
+        rand = Random.Range(0, 79); //0-80
+
+        //can't be 25
+        if (rand == 25)
+        {
+            rand = 13;
+        }
+
+        //can't be 55
+        if (rand == 55)
+        {
+            rand = 63;
+        }
+
+        rand = 34;
 
         //set as doors
         info.wall_array[rand] = 1;
         info.wall_array[rand + 1] = -1;
+        info.wall_array[rand + 2] = -1;
+        info.wall_array[rand + 3] = -1;
+
+        //remove spikes around door
+        info.Remove_Spikes_AroundDoors(rand);
     }
 
 

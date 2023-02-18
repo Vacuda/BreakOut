@@ -8,7 +8,7 @@ using static ot_OBJECTTYPE;
 public class Brick : MonoBehaviour, ICanCollideWith
 {
     public bt_BRICKTYPE brick_type;
-    public ot_OBJECTTYPE object_type { get; set; } = ot_WALL;
+    public ot_OBJECTTYPE object_type { get; set; } = ot_BRICK;
     private SpriteRenderer rend;
 
     private Color32 red;

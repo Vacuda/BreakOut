@@ -35,7 +35,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Mouse_RightButton"",
+                    ""name"": ""Keyboard_AnyKey"",
                     ""type"": ""Button"",
                     ""id"": ""5569a8cc-818a-421d-9d1c-323c09de428e"",
                     ""expectedControlType"": ""Button"",
@@ -69,38 +69,11 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""eec3e6fb-ed58-44df-930d-d7b89bc79335"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Keyboard>/anyKey"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Mouse_RightButton"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
-            ""name"": ""Game"",
-            ""id"": ""4b0e1cd2-90be-40df-abec-6ec8a9078212"",
-            ""actions"": [
-                {
-                    ""name"": ""New action"",
-                    ""type"": ""Button"",
-                    ""id"": ""f78ed8c2-babb-4aee-93d0-bae5ff31def5"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""79401806-b964-49bf-8f29-373e5eb5d454"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""Keyboard_AnyKey"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -174,10 +147,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_RetroGame = asset.FindActionMap("RetroGame", throwIfNotFound: true);
         m_RetroGame_Mouse_PointerLocation = m_RetroGame.FindAction("Mouse_PointerLocation", throwIfNotFound: true);
         m_RetroGame_Mouse_LeftButton = m_RetroGame.FindAction("Mouse_LeftButton", throwIfNotFound: true);
-        m_RetroGame_Mouse_RightButton = m_RetroGame.FindAction("Mouse_RightButton", throwIfNotFound: true);
-        // Game
-        m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
-        m_Game_Newaction = m_Game.FindAction("New action", throwIfNotFound: true);
+        m_RetroGame_Keyboard_AnyKey = m_RetroGame.FindAction("Keyboard_AnyKey", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -229,14 +199,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private IRetroGameActions m_RetroGameActionsCallbackInterface;
     private readonly InputAction m_RetroGame_Mouse_PointerLocation;
     private readonly InputAction m_RetroGame_Mouse_LeftButton;
-    private readonly InputAction m_RetroGame_Mouse_RightButton;
+    private readonly InputAction m_RetroGame_Keyboard_AnyKey;
     public struct RetroGameActions
     {
         private @PlayerControls m_Wrapper;
         public RetroGameActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Mouse_PointerLocation => m_Wrapper.m_RetroGame_Mouse_PointerLocation;
         public InputAction @Mouse_LeftButton => m_Wrapper.m_RetroGame_Mouse_LeftButton;
-        public InputAction @Mouse_RightButton => m_Wrapper.m_RetroGame_Mouse_RightButton;
+        public InputAction @Keyboard_AnyKey => m_Wrapper.m_RetroGame_Keyboard_AnyKey;
         public InputActionMap Get() { return m_Wrapper.m_RetroGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -252,9 +222,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Mouse_LeftButton.started -= m_Wrapper.m_RetroGameActionsCallbackInterface.OnMouse_LeftButton;
                 @Mouse_LeftButton.performed -= m_Wrapper.m_RetroGameActionsCallbackInterface.OnMouse_LeftButton;
                 @Mouse_LeftButton.canceled -= m_Wrapper.m_RetroGameActionsCallbackInterface.OnMouse_LeftButton;
-                @Mouse_RightButton.started -= m_Wrapper.m_RetroGameActionsCallbackInterface.OnMouse_RightButton;
-                @Mouse_RightButton.performed -= m_Wrapper.m_RetroGameActionsCallbackInterface.OnMouse_RightButton;
-                @Mouse_RightButton.canceled -= m_Wrapper.m_RetroGameActionsCallbackInterface.OnMouse_RightButton;
+                @Keyboard_AnyKey.started -= m_Wrapper.m_RetroGameActionsCallbackInterface.OnKeyboard_AnyKey;
+                @Keyboard_AnyKey.performed -= m_Wrapper.m_RetroGameActionsCallbackInterface.OnKeyboard_AnyKey;
+                @Keyboard_AnyKey.canceled -= m_Wrapper.m_RetroGameActionsCallbackInterface.OnKeyboard_AnyKey;
             }
             m_Wrapper.m_RetroGameActionsCallbackInterface = instance;
             if (instance != null)
@@ -265,46 +235,13 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Mouse_LeftButton.started += instance.OnMouse_LeftButton;
                 @Mouse_LeftButton.performed += instance.OnMouse_LeftButton;
                 @Mouse_LeftButton.canceled += instance.OnMouse_LeftButton;
-                @Mouse_RightButton.started += instance.OnMouse_RightButton;
-                @Mouse_RightButton.performed += instance.OnMouse_RightButton;
-                @Mouse_RightButton.canceled += instance.OnMouse_RightButton;
+                @Keyboard_AnyKey.started += instance.OnKeyboard_AnyKey;
+                @Keyboard_AnyKey.performed += instance.OnKeyboard_AnyKey;
+                @Keyboard_AnyKey.canceled += instance.OnKeyboard_AnyKey;
             }
         }
     }
     public RetroGameActions @RetroGame => new RetroGameActions(this);
-
-    // Game
-    private readonly InputActionMap m_Game;
-    private IGameActions m_GameActionsCallbackInterface;
-    private readonly InputAction m_Game_Newaction;
-    public struct GameActions
-    {
-        private @PlayerControls m_Wrapper;
-        public GameActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Newaction => m_Wrapper.m_Game_Newaction;
-        public InputActionMap Get() { return m_Wrapper.m_Game; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(GameActions set) { return set.Get(); }
-        public void SetCallbacks(IGameActions instance)
-        {
-            if (m_Wrapper.m_GameActionsCallbackInterface != null)
-            {
-                @Newaction.started -= m_Wrapper.m_GameActionsCallbackInterface.OnNewaction;
-                @Newaction.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnNewaction;
-                @Newaction.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnNewaction;
-            }
-            m_Wrapper.m_GameActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @Newaction.started += instance.OnNewaction;
-                @Newaction.performed += instance.OnNewaction;
-                @Newaction.canceled += instance.OnNewaction;
-            }
-        }
-    }
-    public GameActions @Game => new GameActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -354,10 +291,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     {
         void OnMouse_PointerLocation(InputAction.CallbackContext context);
         void OnMouse_LeftButton(InputAction.CallbackContext context);
-        void OnMouse_RightButton(InputAction.CallbackContext context);
-    }
-    public interface IGameActions
-    {
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnKeyboard_AnyKey(InputAction.CallbackContext context);
     }
 }
