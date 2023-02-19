@@ -21,9 +21,6 @@ public class EndRetro_Volume : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("got here.");
-
-
         ICanCollideWith lava = collision.gameObject.GetComponent<ICanCollideWith>();
 
         if (lava != null)
@@ -37,5 +34,10 @@ public class EndRetro_Volume : MonoBehaviour
                 Destroy(this);
             }
         }
+    }
+
+    public void Destroy_ThisVolume()
+    {
+        Destroy(gameObject);
     }
 }

@@ -35,6 +35,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
+                    ""name"": ""Keyboard_Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""f7e6c60b-3582-4ca4-80b6-9260963341f1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""Keyboard_AnyKey"",
                     ""type"": ""Button"",
                     ""id"": ""5569a8cc-818a-421d-9d1c-323c09de428e"",
@@ -74,6 +82,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Keyboard_AnyKey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6130e540-cf43-4480-92a6-631220555993"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Keyboard_Escape"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -147,6 +166,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_RetroGame = asset.FindActionMap("RetroGame", throwIfNotFound: true);
         m_RetroGame_Mouse_PointerLocation = m_RetroGame.FindAction("Mouse_PointerLocation", throwIfNotFound: true);
         m_RetroGame_Mouse_LeftButton = m_RetroGame.FindAction("Mouse_LeftButton", throwIfNotFound: true);
+        m_RetroGame_Keyboard_Escape = m_RetroGame.FindAction("Keyboard_Escape", throwIfNotFound: true);
         m_RetroGame_Keyboard_AnyKey = m_RetroGame.FindAction("Keyboard_AnyKey", throwIfNotFound: true);
     }
 
@@ -199,6 +219,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private IRetroGameActions m_RetroGameActionsCallbackInterface;
     private readonly InputAction m_RetroGame_Mouse_PointerLocation;
     private readonly InputAction m_RetroGame_Mouse_LeftButton;
+    private readonly InputAction m_RetroGame_Keyboard_Escape;
     private readonly InputAction m_RetroGame_Keyboard_AnyKey;
     public struct RetroGameActions
     {
@@ -206,6 +227,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public RetroGameActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Mouse_PointerLocation => m_Wrapper.m_RetroGame_Mouse_PointerLocation;
         public InputAction @Mouse_LeftButton => m_Wrapper.m_RetroGame_Mouse_LeftButton;
+        public InputAction @Keyboard_Escape => m_Wrapper.m_RetroGame_Keyboard_Escape;
         public InputAction @Keyboard_AnyKey => m_Wrapper.m_RetroGame_Keyboard_AnyKey;
         public InputActionMap Get() { return m_Wrapper.m_RetroGame; }
         public void Enable() { Get().Enable(); }
@@ -222,6 +244,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Mouse_LeftButton.started -= m_Wrapper.m_RetroGameActionsCallbackInterface.OnMouse_LeftButton;
                 @Mouse_LeftButton.performed -= m_Wrapper.m_RetroGameActionsCallbackInterface.OnMouse_LeftButton;
                 @Mouse_LeftButton.canceled -= m_Wrapper.m_RetroGameActionsCallbackInterface.OnMouse_LeftButton;
+                @Keyboard_Escape.started -= m_Wrapper.m_RetroGameActionsCallbackInterface.OnKeyboard_Escape;
+                @Keyboard_Escape.performed -= m_Wrapper.m_RetroGameActionsCallbackInterface.OnKeyboard_Escape;
+                @Keyboard_Escape.canceled -= m_Wrapper.m_RetroGameActionsCallbackInterface.OnKeyboard_Escape;
                 @Keyboard_AnyKey.started -= m_Wrapper.m_RetroGameActionsCallbackInterface.OnKeyboard_AnyKey;
                 @Keyboard_AnyKey.performed -= m_Wrapper.m_RetroGameActionsCallbackInterface.OnKeyboard_AnyKey;
                 @Keyboard_AnyKey.canceled -= m_Wrapper.m_RetroGameActionsCallbackInterface.OnKeyboard_AnyKey;
@@ -235,6 +260,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Mouse_LeftButton.started += instance.OnMouse_LeftButton;
                 @Mouse_LeftButton.performed += instance.OnMouse_LeftButton;
                 @Mouse_LeftButton.canceled += instance.OnMouse_LeftButton;
+                @Keyboard_Escape.started += instance.OnKeyboard_Escape;
+                @Keyboard_Escape.performed += instance.OnKeyboard_Escape;
+                @Keyboard_Escape.canceled += instance.OnKeyboard_Escape;
                 @Keyboard_AnyKey.started += instance.OnKeyboard_AnyKey;
                 @Keyboard_AnyKey.performed += instance.OnKeyboard_AnyKey;
                 @Keyboard_AnyKey.canceled += instance.OnKeyboard_AnyKey;
@@ -291,6 +319,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     {
         void OnMouse_PointerLocation(InputAction.CallbackContext context);
         void OnMouse_LeftButton(InputAction.CallbackContext context);
+        void OnKeyboard_Escape(InputAction.CallbackContext context);
         void OnKeyboard_AnyKey(InputAction.CallbackContext context);
     }
 }

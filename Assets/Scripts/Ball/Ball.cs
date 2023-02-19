@@ -11,7 +11,14 @@ public class Ball : MonoBehaviour, ICanCollideWith
     public GameLevel game_level;
     public Retro_PlayerController controller;
     private BallMovement ball_movement;
+    private LineScript linescript;
     bool IsStuckToPaddle = false;
+
+    private bool IsCatchable;
+    private Paddle collided_paddle;
+    private float time_stamp_for_catch;
+    private float time_difference_for_holding;
+    private float hold_threshold = 2.0f;
 
     Vector2 StoredVelocity;
     public ot_OBJECTTYPE object_type { get; set; } = ot_BALL;
@@ -20,47 +27,62 @@ public class Ball : MonoBehaviour, ICanCollideWith
 
     void Start()
     {
-        anim = gameObject.GetComponent<Animator>();
+        anim = gameObject.transform.Find("BallSplatter").GetComponent<Animator>();
         r_body = gameObject.GetComponent<Rigidbody2D>();
         ball_movement = gameObject.GetComponent<BallMovement>();
+        linescript = gameObject.transform.Find("Line").GetComponent<LineScript>();
         StoredVelocity = new Vector2(0.0f, 0.0f);    
     }
 
+    void Update()
+    {
+        if (IsStuckToPaddle)
+        {
+            time_difference_for_holding = Time.time - time_stamp_for_catch;
+
+            if(time_difference_for_holding > hold_threshold)
+            {
+                Release_Ball();
+            }
+        }
+    }
+
+
+    //private void OnCollisionStay2D(Collision2D collision)
+    //{
+    //    ICanCollideWith collided_object = collision.gameObject.GetComponent<ICanCollideWith>();
+
+    //    if (collided_object != null)
+    //    {
+    //        //if paddle
+    //        if (collided_object.object_type == ot_PADDLE)
+    //        {
+
+    //        }
+    //    }
+    //}
+
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        game_level.s_lab.PlaySound_Hit();
+
         ICanCollideWith collided_object = collision.gameObject.GetComponent<ICanCollideWith>();
 
         if(collided_object != null)
         {
+            //if spike
             if(collided_object.object_type == ot_SPIKE)
             {
                 //Debug
                 if (IsKilledBySpikes)
                 {
-
-                    EndGame();
+                    Death();
                 }
 
 
             }
 
-            if(collided_object.object_type == ot_PADDLE)
-            {
-                if (controller.IsInCatchMode == true)
-                {
-                    //StoredVelocity = r_body.velocity;
-
-
-                    IsStuckToPaddle = true;
-                    r_body.simulated = false;
-                    gameObject.transform.parent = collision.gameObject.transform;
-                    ball_movement.enabled = false;
-                }
-
-
-
-
-            }
             //if brick
             if (collided_object.object_type == ot_BRICK)
             {
@@ -85,44 +107,116 @@ public class Ball : MonoBehaviour, ICanCollideWith
 
                 }
             }
-        }
-        
- 
 
+            ////if paddle
+            //if(collided_object.object_type == ot_PADDLE)
+            //{
+            //    if (gameObject.GetComponent<Paddle>().AbleToCatchBall)
+            //    {
+
+            //    }
+
+            //    //store paddle
+            //    collided_paddle = collision.gameObject.GetComponent<Paddle>();
+
+            //    if (controller.IsInCatchMode == true)
+            //    {
+
+
+            //        IsStuckToPaddle = true;
+            //        r_body.simulated = false;
+            //        gameObject.transform.parent = collision.gameObject.transform;
+            //        ball_movement.enabled = false;
+
+
+
+
+            //        linescript.Trigger_LineDrawing(true);
+        }
     }
+
+    public void Stick_ToThisPaddle(Paddle paddle)
+    {
+        game_level.s_lab.PlaySound_Grab();
+
+        IsStuckToPaddle = true;
+        ball_movement.Stop_Ball(true);
+        gameObject.transform.parent = paddle.gameObject.transform;
+        linescript.Trigger_LineDrawing(true);
+
+        time_stamp_for_catch = Time.time;
+    }
+
+    //void OnCollisionExit2D(Collision2D collision)
+    //{
+    //    ICanCollideWith collided_object = collision.gameObject.GetComponent<ICanCollideWith>();
+
+    //    if (collided_object != null)
+    //    {
+    //        if (collided_object.object_type == ot_PADDLE)
+    //        {
+    //            if (controller.IsInCatchMode == true)
+    //            {
+
+
+    //                IsStuckToPaddle = true;
+    //                r_body.simulated = false;
+    //                gameObject.transform.parent = collision.gameObject.transform;
+    //                ball_movement.enabled = false;
+
+
+
+
+    //                linescript.Trigger_LineDrawing(true);
+    //            }
+
+
+
+
+    //        }
+    //    }
+
+    //    if (collided_object.object_type == ot_PADDLE)
+    //    {
+    //        if (controller.IsInCatchMode == true)
+    //        {
+
+
+    //            IsStuckToPaddle = true;
+    //            r_body.simulated = false;
+    //            gameObject.transform.parent = collision.gameObject.transform;
+    //            ball_movement.enabled = false;
+
+
+
+
+    //            linescript.Trigger_LineDrawing(true);
+    //        }
+
+
+
+
+    //    }
+    //}
 
     public void Release_Ball()
     {
         if (IsStuckToPaddle)
         {
-            ball_movement.enabled = true;
-            r_body.simulated = true;
+
+            game_level.s_lab.PlaySound_Release();
             IsStuckToPaddle = false;
+            ball_movement.Stop_Ball(false);
             gameObject.transform.parent = null;
+            linescript.Trigger_LineDrawing(false);
         }
 
     }
     
-    public void EndGame()
+    public void Death()
     {
-        r_body.simulated = false;
-
-
-        StartCoroutine(lava());
-    }
-
-    IEnumerator lava()
-    {
-        Debug.Log("DEESTORY");
         anim.Play("state_Exploding");
-
-        yield return new WaitForSeconds(1.0f);
-
-        game_level.Trigger_EndGame();
-
-
-
-
-        yield break;
+        ball_movement.Stop_Ball(true);
+        game_level.Trigger_OnDeath();
     }
 }

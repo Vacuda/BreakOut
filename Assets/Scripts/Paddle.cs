@@ -7,7 +7,7 @@ public class Paddle : MonoBehaviour, ICanCollideWith
 {
     public Retro_PlayerController retro_controller;
 
-    public ot_OBJECTTYPE object_type { get; set; } = ot_PADDLE;
+    public ot_OBJECTTYPE object_type { get; set; }
 
     /* STORAGE MEMBERS */
     float screen_width;
@@ -24,10 +24,13 @@ public class Paddle : MonoBehaviour, ICanCollideWith
     float new_y;
     Vector3 pos;
 
+
     PlayerControls Controls;
 
     public bool IsSidePaddle = false;
     public bool IsRetroPaddle = false;
+
+    public bool AbleToCatchBall = false;
 
     private void Start()
     {
@@ -47,14 +50,17 @@ public class Paddle : MonoBehaviour, ICanCollideWith
             pos = new Vector3(0.0f, gameObject.transform.position.y, 0.0f);
         }
 
+        //set object type
+        object_type = IsRetroPaddle ? ot_RETROPADDLE : ot_PADDLE;
+
         //get screen width
         screen_width = Screen.width; //1920
         screen_height = Screen.height; //907
         //screen_width = Display.displays[0].renderingWidth; //1920
         //screen_height = Display.displays[0].renderingHeight; //907
 
-        Debug.Log(screen_width);
-        Debug.Log(screen_height);
+        //Debug.Log(screen_width);
+        //Debug.Log(screen_height);
     }
 
     // Update is called once per frame
@@ -124,8 +130,6 @@ public class Paddle : MonoBehaviour, ICanCollideWith
             //get mouse_y
             mouse_y = Controls.RetroGame.Mouse_PointerLocation.ReadValue<Vector2>().y;
 
-            Debug.Log(mouse_y);
-
             //get new_y
             new_y = min_y_position + ((mouse_y / (screen_height * 0.75f)) * (max_y_position - min_y_position));
 
@@ -176,5 +180,35 @@ public class Paddle : MonoBehaviour, ICanCollideWith
     public void Destroy_Paddle()
     {
         Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        ICanCollideWith collided_object = collider.gameObject.GetComponent<ICanCollideWith>();
+
+        if (collided_object != null)
+        {
+            //if ball
+            if (collided_object.object_type == ot_BALL)
+            {
+                AbleToCatchBall = true;
+            }
+        }   
+    }
+
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+        ICanCollideWith collided_object = collider.gameObject.GetComponent<ICanCollideWith>();
+
+        if (collided_object != null)
+        {
+            //if ball
+            if (collided_object.object_type == ot_BALL)
+            {
+                AbleToCatchBall = false;
+
+                retro_controller.Exiting_CatchablePhase(this);
+            }
+        }
     }
 }

@@ -15,7 +15,7 @@ public class DoorWay_Volume : MonoBehaviour
             if (lava.object_type == ot_BALL)
             {
                 //trigger
-                game_level.Trigger_EndGame();
+                game_level.Trigger_SuccessfulExit();
 
                 //shutdown
                 Destroy(this);

@@ -62,3 +62,6 @@ TagManager:
   - name: UI
     uniqueID: 2436145595
     locked: 0
+  - name: LogoScreen
+    uniqueID: 1443786329
+    locked: 0

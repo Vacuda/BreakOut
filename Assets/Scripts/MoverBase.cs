@@ -18,6 +18,8 @@ public class MoverBase : MonoBehaviour
 
     private Vector3 TargetPosition;
     private Vector3 StartPosition;
+    private Vector3 OutsidePosition;
+    private Vector3 InsidePosition;
     private float time_start;
 
 
@@ -27,6 +29,11 @@ public class MoverBase : MonoBehaviour
     {
         StartPosition = gameObject.transform.position;
         TargetPosition = new Vector3(target_x, target_y, target_z);
+        InsidePosition = gameObject.transform.position;
+        OutsidePosition = new Vector3(target_x, target_y, target_z);
+
+        //Debug.Log("inside" + InsidePosition);
+        //Debug.Log("out" + OutsidePosition);
     }
 
     // Update is called once per frame
@@ -66,7 +73,7 @@ public class MoverBase : MonoBehaviour
             //set new start position
             gameObject.transform.position = NewPosition;
 
-            if (percentage_complete == 1.0f)
+            if (percentage_complete >= 1.0f)
             {
                 ActiveMove = false;
             }
@@ -110,5 +117,20 @@ public class MoverBase : MonoBehaviour
         Vector3 temp = StartPosition;
         StartPosition = TargetPosition;
         TargetPosition = temp;
+    }
+    public void Move_In()
+    {
+        TargetPosition = InsidePosition;
+        StartPosition = OutsidePosition;
+
+        InstantChange_ToTargetPosition();
+    }
+
+    public void Move_Out()
+    {
+        TargetPosition = OutsidePosition;
+        StartPosition = InsidePosition;
+
+        Activate_Move();
     }
 }

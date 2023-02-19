@@ -22,6 +22,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "Keyboard_Escape",
+                    "type": "Button",
+                    "id": "f7e6c60b-3582-4ca4-80b6-9260963341f1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Keyboard_AnyKey",
                     "type": "Button",
                     "id": "5569a8cc-818a-421d-9d1c-323c09de428e",
@@ -61,6 +69,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Keyboard_AnyKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6130e540-cf43-4480-92a6-631220555993",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Keyboard_Escape",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

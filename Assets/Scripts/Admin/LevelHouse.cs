@@ -9,6 +9,17 @@ public static class LevelHouse
         Place_Flooring(info);
         Place_Spikes(info, rank);
         Place_Door(info, rank);
+        Place_Items(info, rank);
+
+        if(rank == 0)
+        {
+            info.NeedsAGate = true;
+            Remove_TopWallInfo(info);
+        }
+        else
+        {
+            info.NeedsAGate = false;
+        }
 
         return info;
     }
@@ -110,36 +121,130 @@ public static class LevelHouse
     {
         int rand;
 
-        //initialize rand
-        rand = Random.Range(0, 79); //0-80
-
-        //can't be 25
-        if (rand == 25)
+        //first time, door can't be top
+        if(rank == 0)
         {
-            rand = 13;
+            //initialize rand
+            rand = Random.Range(0, 79); //0-78
+        }
+        else
+        {
+            //initialize rand
+            rand = Random.Range(0, 110); //0-109
         }
 
-        //can't be 55
-        if (rand == 55)
+        switch (rand)
         {
-            rand = 63;
+
+
+            case 24:
+                rand = 5;
+                break;
+            case 25:
+                rand = 13;
+                break;
+
+
+            case 54:
+                rand = 34;
+                break;
+            case 55:
+                rand = 48;
+                break;
+
+
+            case 80:
+                rand = 61;
+                break;
+            case 81:
+                rand = 69;
+                break;
+
+
+            default:
+                break;
         }
 
-        rand = 34;
+        //@@@@ 23
+        //@@@@ 53
+        //@@@@ 79
+        //@@@@ 109
+        //special cases, just need to be trimmed less than the others
+        if (rand == 23 || rand == 53 || rand == 79 || rand == 109)
+        {
+            //set as doors
+            info.wall_array[rand] = 1;
+            info.wall_array[rand + 1] = -1;
+            info.wall_array[rand + 2] = -1;
+            //info.wall_array[rand + 3] = -1; // this can stay out
+        }
+        else
+        {
+            //set as doors
+            info.wall_array[rand] = 1;
+            info.wall_array[rand + 1] = -1;
+            info.wall_array[rand + 2] = -1;
+            info.wall_array[rand + 3] = -1;
+        }
 
-        //set as doors
-        info.wall_array[rand] = 1;
-        info.wall_array[rand + 1] = -1;
-        info.wall_array[rand + 2] = -1;
-        info.wall_array[rand + 3] = -1;
 
         //remove spikes around door
         info.Remove_Spikes_AroundDoors(rand);
     }
 
+    public static void Place_Items(LevelInfo info, int rank) 
+    {
+        int num_of_items;
+
+        if(rank <= 5)
+        {
+            num_of_items = Random.Range(1, 5);
+        }
+        else if(rank <= 10)
+        {
+            num_of_items = Random.Range(2, 6);
+        }
+        else if (rank <= 15)
+        {
+            num_of_items = Random.Range(3, 7);
+        }
+        else if (rank <= 20)
+        {
+            num_of_items = Random.Range(4, 8);
+        }
+        else if (rank <= 25)
+        {
+            num_of_items = Random.Range(5, 9);
+        }
+        else
+        {
+            num_of_items = Random.Range(6, 10);
+        }
+
+        while (num_of_items > 0)
+        {
+            //get index
+            int rand_index = Random.Range(0, info.item_array.Length);
+
+            //if blank
+            if (info.item_array[rand_index] == 0)
+            {
+                info.item_array[rand_index] = Random.Range(1, 5);
+                num_of_items--;
+            }
+
+        }
+    }
+
 
     /* UTILITIES*/
 
-
+    public static void Remove_TopWallInfo(LevelInfo info)
+    {
+        for(int i = 82; i<info.wall_array.Length; i++)
+        {
+            info.wall_array[i] = -1;
+        }
+    }
 
 }

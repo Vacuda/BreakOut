@@ -10,7 +10,7 @@ public class BallMovement : MonoBehaviour
 
     //speeds
     float normalSpeed = 18.0f;
-    float slowSpeed = 3.0f;
+    float slowSpeed = 1.0f;
     
     void Start()
     {
@@ -31,6 +31,8 @@ public class BallMovement : MonoBehaviour
 
         //set speed
         currentSpeed = normalSpeed;
+
+        Stop_Ball(true);
     }
 
     
@@ -48,5 +50,19 @@ public class BallMovement : MonoBehaviour
     public void ChangeSpeed_Normal()
     {
         currentSpeed = normalSpeed;
+    }
+
+    public void Stop_Ball(bool stopped)
+    {
+        if (stopped)
+        {
+            r_body.simulated = false;
+            this.enabled = false;
+        }
+        else
+        {
+            r_body.simulated = true;
+            this.enabled = true;
+        }
     }
 }

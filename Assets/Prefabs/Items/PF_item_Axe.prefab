@@ -71,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ce97bc3d388111246a834f2f66db3d92, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4e38dc400f1cc2646bdeb3a9fe83491f, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.19607843}
   m_FlipX: 0
   m_FlipY: 0
@@ -93,9 +93,9 @@ GameObject:
   - component: {fileID: 9031632975056076545}
   - component: {fileID: 5539520414845968793}
   - component: {fileID: 7321135831865434087}
-  - component: {fileID: 8739125738901784572}
+  - component: {fileID: 99790251369064579}
   m_Layer: 0
-  m_Name: PF_item_Lipstick
+  m_Name: PF_item_Axe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,7 +149,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &8739125738901784572
+--- !u!60 &99790251369064579
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -165,27 +165,28 @@ PolygonCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 2}
-    newSize: {x: 2, y: 2}
-    adaptiveTilingThreshold: 0.5
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.1810844, y: 0.067394}
-      - {x: -0.3115261, y: 0.056131124}
-      - {x: -0.37260377, y: -0.012656182}
-      - {x: -0.37234718, y: -0.6760671}
-      - {x: -0.31549883, y: -0.753713}
-      - {x: 0.29571617, y: -0.7514236}
-      - {x: 0.36964017, y: -0.6906891}
-      - {x: 0.36673462, y: 0.0066774786}
-      - {x: 0.33214533, y: 0.061125576}
-      - {x: 0.19058388, y: 0.07586881}
-      - {x: 0.1907476, y: 0.7466409}
-      - {x: -0.18780655, y: 0.7417728}
+    - - {x: 0.5711694, y: 0.80232704}
+      - {x: 0.4313704, y: 0.8684226}
+      - {x: 0.20176122, y: 0.8703361}
+      - {x: 0.1634215, y: 0.7680451}
+      - {x: 0.01788289, y: 0.7496396}
+      - {x: -0.7588155, y: -0.85337085}
+      - {x: -0.5564901, y: -0.8760779}
+      - {x: -0.28450966, y: -0.30468756}
+      - {x: -0.08280758, y: -0.42053896}
+      - {x: 0.23133148, y: -0.4314318}
+      - {x: 0.55201954, y: -0.17864507}
+      - {x: 0.73898196, y: 0.07027081}
+      - {x: 0.7543447, y: 0.6130262}
 --- !u!1 &7622640592013688276
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +198,7 @@ GameObject:
   - component: {fileID: 113109045629844016}
   - component: {fileID: 3023289706149816330}
   m_Layer: 0
-  m_Name: Lipstick
+  m_Name: Axe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -257,7 +258,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ce97bc3d388111246a834f2f66db3d92, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4e38dc400f1cc2646bdeb3a9fe83491f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -16,6 +16,10 @@ public class LevelBuilder : MonoBehaviour
     public GameObject PF_Spike;
     public GameObject PF_DoorWay;
     public GameObject PF_FloorTile;
+    public GameObject PF_Axe;
+    public GameObject PF_GolfClub;
+    public GameObject PF_Pizza;
+    public GameObject PF_NailPolish;
 
     /* TEMP MEMBERS */
     Vector3Int grid_pos;
@@ -41,9 +45,10 @@ public class LevelBuilder : MonoBehaviour
         Build_Floorings(info);
 
         Build_CornerStones();
-        Build_Gate();
+        Build_Gate(info);
         Build_Spikes(info);
         Build_Walls(info);
+        Build_Items(info);
 
 
 
@@ -54,21 +59,20 @@ public class LevelBuilder : MonoBehaviour
 
     /* BUILDS */
 
-    void Build_Gate()
+    void Build_Gate(LevelInfo info)
     {
-        //full rows
-        for (int x = -18; x <= 11; x++)
+        if (info.NeedsAGate)
         {
-            //top row, attach to gate
-            MakeBlock(x, 14, true);
+            //full rows
+            for (int x = -18; x <= 11; x++)
+            {
+                //top row, attach to gate
+                MakeBlock(x, 14, true);
 
-            //top row, attach to gate
-            MakeBlock(x, 13, true);
+                //top row, attach to gate
+                MakeBlock(x, 13, true);
+            }
         }
-
-        //side spikes
-        MakeSpike(-19, 14, 90, true);
-        MakeSpike(-19, 13, 90, true);
     }
 
     void Build_Floorings(LevelInfo info)
@@ -216,6 +220,38 @@ public class LevelBuilder : MonoBehaviour
             //increment runner
             runner++;
         }
+
+        //top
+        for (int x = 11; x >= -18; x--)
+        {
+            //get object_code
+            object_code = info.wall_array[runner];
+
+            //if wall = 0
+            if (object_code == 0)
+            {
+                //top row
+                MakeBlock(x, 13);
+
+                //bottom row
+                MakeBlock(x, 14);
+            }
+
+            //if doorway = 1
+            if (object_code == 1)
+            {
+                MakeDoorWay(x, 13, 180);
+            }
+
+            //if skipping = -1
+            if (object_code == -1)
+            {
+                //do nothing
+            }
+
+            //increment runner
+            runner++;
+        }
     }
 
     void Build_Spikes(LevelInfo info)
@@ -275,9 +311,63 @@ public class LevelBuilder : MonoBehaviour
         }
     }
 
+    void Build_Items(LevelInfo info)
+    {
+        int runner = 0;
+
+        //loop cols
+        for (int y = 8; y >= -8; y -= 2)
+        {
+            //loop rows
+            for (int x = -14; x <= 6; x += 2)
+            {
+                //make tile
+                MakeItem(x, y, info.item_array[runner]);
+
+                //increment runner
+                runner++;
+            }
+        }
+    }
 
     /* MAKES */
 
+    void MakeItem(int x, int y, int style)
+    {
+        GameObject item = null;
+
+        switch (style)
+        {
+            case 1:
+                item = Instantiate(PF_Axe);
+                break;
+            case 2:
+                item = Instantiate(PF_GolfClub);
+                break;
+            case 3:
+                item = Instantiate(PF_Pizza);
+                break;
+            case 4:
+                item = Instantiate(PF_NailPolish);
+                break;
+            default:
+                break;
+        }
+
+        //change grid values
+        grid_pos.x = x;
+        grid_pos.y = y;
+
+        //get world pos
+        pos = _tilemap.GetCellCenterWorld(grid_pos);
+
+        //safety
+        if (item != null)
+        {
+            //set position
+            item.transform.position = pos;
+        }
+    }
     void MakeFloorTile(int x, int y, int style)
     {
         //instantiate block
